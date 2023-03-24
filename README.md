@@ -9,7 +9,7 @@ This repository contains the code for control point conditioned prediction and t
 <a href="https://aaai-23.aaai.org/">AAAI 2023</a>
 
 <div align='center'>
-  <img src="img/graph-tern-teaser.svg" width=80%'>
+  <img src="img/graph-tern-teaser.svg" width=70%>
   <br>An illustration of our Graph-TERN model
 </div>
 

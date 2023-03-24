@@ -1,4 +1,4 @@
-# A Set of Control Points Conditioned Pedestrian Trajectory Prediction
+## A Set of Control Points Conditioned Pedestrian Trajectory Prediction
 This repository contains the code for control point conditioned prediction and the initial trajectory refinement network for trajectory prediction.
 
 **[A Set of Control Points Conditioned Pedestrian Trajectory Prediction](https://inhwanbae.github.io/publication/graphtern/)**

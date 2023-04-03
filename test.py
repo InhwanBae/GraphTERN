@@ -1,11 +1,10 @@
-import os
 import pickle
 import argparse
 import torch
 import numpy as np
 from tqdm import tqdm
-from dataloader import TrajectoryDataset
-from model import graph_tern
+from graphtern.model import graph_tern
+from utils.dataloader import TrajectoryDataset
 from torch.utils.data import DataLoader
 
 

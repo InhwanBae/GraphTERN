@@ -5,10 +5,8 @@ import torch
 import random
 import numpy as np
 from tqdm import tqdm
-from dataloader import TrajectoryDataset
-from model import graph_tern
-from metrics import mse_loss, gaussian_mixture_loss
-from utils import data_sampler
+from graphtern import *
+from utils import *
 from torch.utils.data import DataLoader
 
 

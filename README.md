@@ -35,12 +35,12 @@ To train our Graph-TERN on the ETH and UCY datasets at once, we provide a bash s
 ```
 We provide additional arguments for experiments: 
 ```bash
-./scripts/train.sh <gpu_ids_for_five_scenes>
+./scripts/train.sh -p <experiment_tag_prefix> -s <experiment_tag_suffix> -d <space_seperated_dataset_string> -i <space_seperated_gpu_id_string>
 
 # Examples
-./scripts/train.sh
-./scripts/train.sh 0 0 0 0 0
-./scripts/train.sh 0 1 2 3 4
+./scripts/train.sh -d "hotel" -i "1"
+./scripts/train.sh -p graph-tern_ -s _experiment -d "zara2" -i "2"
+./scripts/train.sh -d "eth hotel univ zara1 zara2" -i "0 0 0 0 0"
 ```
 If you want to train the model with custom hyper-parameters, use `train.py` instead of the script file.
 ```bash
@@ -57,17 +57,18 @@ python train.py --input_size <input_coordinate_dimension> --output_size <output_
 
 ## Model Evaluation
 ### Pretrained Models
-We have included pretrained models in the `./checkpoints/` folder.
+We have included pretrained models in the `./checkpoint/` folder.
 
 ### Evaluate Graph-TERN
 To evaluate our Graph-TERN at once, we provide a bash script `test.sh` for a simplified execution.
 ```bash
-./scripts/test.sh <gpu_ids_for_five_scenes>
+./scripts/test.sh -p <experiment_tag_prefix> -s <experiment_tag_suffix> -d <space_seperated_dataset_string> -i <space_seperated_gpu_id_string>
 
 # Examples
 ./scripts/test.sh
-./scripts/test.sh 0 0 0 0 0
-./scripts/test.sh 0 1 2 3 4
+./scripts/test.sh -d "hotel" -i "1"
+./scripts/test.sh -p graph-tern_ -s _experiment -d "zara2" -i "2"
+./scripts/test.sh -d "eth hotel univ zara1 zara2" -i "0 0 0 0 0"
 ```
 
 If you want to evaluate the model individually, you can use `test.py` with custom hyper-parameters. 

@@ -23,7 +23,6 @@ with open(args_path, 'rb') as f:
 
 dataset_path = './datasets/' + args.dataset + '/'
 model_path = checkpoint_dir + args.dataset + '_best.pth'
-KSTEPS = test_args.n_samples
 
 # Data preparation
 test_dataset = TrajectoryDataset(dataset_path + 'test/', obs_len=args.obs_seq_len, pred_len=args.pred_seq_len, skip=1)
@@ -49,7 +48,7 @@ def test(KSTEPS=20):
         S_obs, S_trgt = [tensor.cuda() for tensor in batch[-2:]]
 
         # Run Graph-TERN model
-        V_init, V_pred, V_refi, valid_mask = model(S_obs, pruning=4)
+        V_init, V_pred, V_refi, valid_mask = model(S_obs, pruning=4, clustering=True)
 
         # Calculate ADEs and FDEs for each refined trajectory
         V_trgt_abs = S_trgt[:, 0].squeeze(dim=0)
@@ -74,7 +73,7 @@ def main():
     # Repeat the evaluation to reduce randomness
     repeat = 10
     for i in range(repeat):
-        temp = test(KSTEPS=20)
+        temp = test(KSTEPS=test_args.n_samples)
         ade_refi.append(temp[0])
         fde_refi.append(temp[1])
 

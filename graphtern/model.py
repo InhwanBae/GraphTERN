@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from torch.distributions import Categorical, Independent, Normal, MixtureSameFamily
 from .stmrgcn import st_mrgcn, epcnn, trcnn
+from .kmeans import BatchKMeans
 
 
 def generate_adjacency_matrix(V):
@@ -64,7 +65,7 @@ class graph_tern(nn.Module):
             self.trcnns.append(trcnn(total_seq_len=total_seq_len, pred_seq_len=total_seq_len, in_channels=hidden_feat, out_channels=hidden_feat, t_ksize=(n_trcnn-j)*2+1))
         self.trcnns.append(trcnn(total_seq_len=total_seq_len, pred_seq_len=pred_seq_len, in_channels=hidden_feat, out_channels=input_feat))
 
-    def forward(self, S_obs, S_trgt=None, pruning=None):
+    def forward(self, S_obs, S_trgt=None, pruning=None, clustering=False):
 
         ##################################################
         # Control Point Conditioned Endpoint Prediction  #
@@ -149,6 +150,30 @@ class graph_tern(nn.Module):
 
             dest_s_list = torch.stack(dest_s_list, dim=3)
             endpoint_set = dest_s_list.mean(dim=3)
+            valid_mask = torch.ones(self.n_smpl, Gamma.size(0), device='cuda')
+        elif clustering:
+            # Test phase
+            # Clustering approach
+            V_init_list = V_init.chunk(chunks=self.n_ways, dim=-1)
+            dest_s_list = []
+            for i in range(self.n_ways):
+                temp = V_init_list[i].transpose(1, 2).contiguous()
+                mix_temp = temp[:, :, :, 4]
+                sort_index = torch.argsort(mix_temp.squeeze(dim=0), dim=-1)
+                mix_temp[:, torch.arange(V_init.size(2)).unsqueeze(dim=1), sort_index[:, :pruning]] = -1e8
+                mix = Categorical(torch.nn.functional.softmax(mix_temp, dim=-1))
+                comp = Independent(Normal(temp[:, :, :, 0:2], temp[:, :, :, 2:4].exp()), 1)
+                gmm = MixtureSameFamily(mix, comp)
+                dest_s_list.append(gmm.sample((1000,)).squeeze(dim=1))
+
+            dest_s_list = torch.stack(dest_s_list, dim=3)
+            endpoint_set_prune = dest_s_list.mean(dim=3)
+            batch_k_means = BatchKMeans(n_clusters=self.n_smpl, n_redo=1)
+            batch_k_means.fit(endpoint_set_prune.permute(1, 2, 0).contiguous())
+            if batch_k_means.centroids is not None:
+                endpoint_set = batch_k_means.centroids.permute(2, 0, 1)
+            else:
+                endpoint_set = endpoint_set_prune[:20]
             valid_mask = torch.ones(self.n_smpl, Gamma.size(0), device='cuda')
         else:
             # Test phase

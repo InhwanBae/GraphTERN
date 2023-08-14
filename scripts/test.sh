@@ -2,7 +2,7 @@
 echo "Start evaluation task queues"
 
 # Hyperparameters
-name_array=("eth" "hotel" "univ" "zara1" "zara2")
+dataset_array=("eth" "hotel" "univ" "zara1" "zara2")
 device_id_array=(0 1 2 3 4)
 prefix="graph-tern_"
 suffix="_experiment"
@@ -33,7 +33,7 @@ PID_array=()
 sighdl ()
 {
   echo "Kill evaluation processes"
-  for (( i=0; i<${#name_array[@]}; i++ ))
+  for (( i=0; i<${#dataset_array[@]}; i++ ))
   do
     kill ${PID_array[$i]}
   done
@@ -44,11 +44,11 @@ sighdl ()
 trap sighdl SIGINT SIGTERM
 
 # Start testing tasks
-for (( i=0; i<${#name_array[@]}; i++ ))
+for (( i=0; i<${#dataset_array[@]}; i++ ))
 do
-  printf "Testing ${name_array[$i]}"
+  printf "Testing ${dataset_array[$i]}"
   CUDA_VISIBLE_DEVICES=${device_id_array[$i]} python3 test.py \
-  --tag "${prefix}""${name_array[$i]}""${suffix}" &
+  --tag "${prefix}""${dataset_array[$i]}""${suffix}" &
   PID_array[$i]=$!
   printf " job ${#PID_array[@]} pid ${PID_array[$i]}\n"
   wait ${PID_array[$i]}

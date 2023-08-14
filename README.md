@@ -14,10 +14,15 @@ This repository contains the code for control point conditioned prediction and t
 </div>
 
 
-## Graph-TERN Model
+## 🚩 Graph-TERN Model 🚩
 * Control points divide each pedestrian's future path into sections and are inferred by each stochastic goal.
 * Gaussian mixture model pruning scheme to effectively cutting-off abnormal behaviors of pedestrians.
 * Initial trajectory refinement by adding the correction vector field to the linearly interpolated path.
+
+### News
+* The latest version of Graph-TERN is now available, offering significantly improved results!
+* You can find the exact AAAI'23 version [here](https://github.com/InhwanBae/GraphTERN/tree/AAAI2023).
+
 
 ## Model Training
 ### Setup
@@ -84,13 +89,14 @@ python test.py --tag graph-tern_zara2_experiment
 ```
 
 
-## Citation
-If you find this code useful for your research, please cite our papers :)
+## 📖 Citation
+If you find this code useful for your research, please cite our trajectory prediction papers :)
 
 [**`DMRGCN (AAAI'21)`**](https://github.com/InhwanBae/DMRGCN) **|** 
 [**`NPSN (CVPR'22)`**](https://github.com/InhwanBae/NPSN) **|** 
 [**`GP-Graph (ECCV'22)`**](https://github.com/InhwanBae/GPGraph) **|** 
-[**`Graph-TERN (AAAI'23)`**](https://github.com/InhwanBae/GraphTERN)
+[**`Graph-TERN (AAAI'23)`**](https://github.com/InhwanBae/GraphTERN) **|** 
+[**`EigenTrajectory (ICCV'23)`**](https://github.com/InhwanBae/EigenTrajectory)
 
 ```bibtex
 @article{bae2023graphtern,
@@ -123,6 +129,13 @@ If you find this code useful for your research, please cite our papers :)
   author={Bae, Inhwan and Park, Jin-Hwi and Jeon, Hae-Gon},
   booktitle={Proceedings of the European Conference on Computer Vision},
   year={2022}
+}
+
+@inproceedings{bae2023eigentrajectory,
+  title={EigenTrajectory: Low-Rank Descriptors for Multi-Modal Trajectory Forecasting},
+  author={Bae, Inhwan and Oh, Jean and Jeon, Hae-Gon},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  year={2023}
 }
 ```
 </details>

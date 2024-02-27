@@ -15,7 +15,7 @@
 </p>
 
 <div align='center'>
-  <img src="img/graph-tern-teaser.svg" width=70%>
+  <br><img src="img/graph-tern-teaser.svg" width=70%>
   <br>An illustration of our Graph-TERN model
 </div>
 
